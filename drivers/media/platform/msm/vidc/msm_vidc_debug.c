@@ -185,11 +185,6 @@ struct dentry *msm_vidc_debugfs_init_core(struct msm_vidc_core *core,
 		dprintk(VIDC_ERR, "debugfs_create_file: fail\n");
 		goto failed_create_dir;
 	}
-	if (!debugfs_create_u32("vp8_low_tier", S_IRUGO | S_IWUSR,
-			parent, &msm_vp8_low_tier)) {
-		dprintk(VIDC_ERR, "debugfs_create_file: fail\n");
-		goto failed_create_dir;
-	}
 	if (!debugfs_create_u32("debug_output", S_IRUGO | S_IWUSR,
 			parent, &msm_vidc_debug_out)) {
 		dprintk(VIDC_ERR, "debugfs_create_file: fail\n");
