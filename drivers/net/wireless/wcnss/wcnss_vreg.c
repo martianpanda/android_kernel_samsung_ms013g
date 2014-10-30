@@ -371,6 +371,7 @@ static int configure_iris_xo(struct device *dev, bool use_48mhz_xo, int on,
 				*iris_xo_set = WCNSS_XO_48MHZ;
 		}
 
+xo_configure:
 		writel_relaxed(reg, pmu_conf_reg);
 
 		wcnss_iris_reset(reg, pmu_conf_reg);
