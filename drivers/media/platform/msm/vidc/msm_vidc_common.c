@@ -3730,8 +3730,6 @@ int msm_comm_smem_get_domain_partition(struct msm_vidc_inst *inst,
 	return msm_smem_get_domain_partition(inst->mem_client, flags,
 			buffer_type, domain_num, partition_num);
 }
-<<<<<<< HEAD
-=======
 
 void msm_vidc_fw_unload_handler(struct work_struct *work)
 {
@@ -3774,4 +3772,3 @@ void msm_vidc_fw_unload_handler(struct work_struct *work)
 	}
 	mutex_unlock(&core->lock);
 }
->>>>>>> 39c9f4e... msm: vidc: Refactor OCMEM alloc, set, unset and free
