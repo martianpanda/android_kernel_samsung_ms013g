@@ -491,7 +491,6 @@ int diag_process_smd_read_data(struct diag_smd_info *smd_info, void *buf,
 			*in_busy_ptr = 1;
 			err = diag_device_write(buf, smd_info->peripheral,
 						write_ptr_modem);
-			spin_unlock_irqrestore(&smd_info->in_busy_lock, flags);
 			if (err) {
 				/* Free up the buffer for future use */
 				*in_busy_ptr = 0;
