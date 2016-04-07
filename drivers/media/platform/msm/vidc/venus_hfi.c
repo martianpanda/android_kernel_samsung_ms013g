@@ -558,38 +558,6 @@ static void venus_hfi_set_registers(struct venus_hfi_device *device)
 	}                                                                  
 }                                                                   
 
-static int venus_hfi_halt_axi(struct venus_hfi_device *device)
-{
-	u32 reg;
-	int rc = 0;
-	if (!device) {
-		dprintk(VIDC_ERR, "Invalid input: %p\n", device);
-		return -EINVAL;
-	}
-	mutex_lock(&device->clk_pwr_lock);
-	if (venus_hfi_clk_gating_off(device)) {
-		dprintk(VIDC_ERR, "Failed to turn off clk gating\n");
-		rc = -EIO;
-		goto err_clk_gating_off;
-	}
-	/* Halt AXI and AXI OCMEM VBIF Access */
-	reg = venus_hfi_read_register(device, VENUS_VBIF_AXI_HALT_CTRL0);
-	reg |= VENUS_VBIF_AXI_HALT_CTRL0_HALT_REQ;
-	venus_hfi_write_register(device, VENUS_VBIF_AXI_HALT_CTRL0, reg, 0);
-
-	/* Request for AXI bus port halt */
-	rc = readl_poll_timeout((u32)device->hal_data->register_base_addr
-			+ VENUS_VBIF_AXI_HALT_CTRL1,
-			reg, reg & VENUS_VBIF_AXI_HALT_CTRL1_HALT_ACK,
-			POLL_INTERVAL_US,
-			VENUS_VBIF_AXI_HALT_ACK_TIMEOUT_US);
-	if (rc)
-		dprintk(VIDC_WARN, "AXI bus port halt timeout\n");
-err_clk_gating_off:
-	mutex_unlock(&device->clk_pwr_lock);
-	return rc;
-}
-
 static int venus_hfi_core_start_cpu(struct venus_hfi_device *device)
 {
 	u32 ctrl_status = 0, count = 0, rc = 0;
